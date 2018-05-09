@@ -1,8 +1,11 @@
 FROM nginx:stable-alpine
-
+MAINTAINER "mcn015@uib.cat"
 # support running as arbitrary user which belogs to the root group
-RUN chmod g+rwx /var/cache/nginx /var/run /var/log/nginx
-RUN chgrp -R root /var/cache/nginx
+RUN chmod g+rwx /var/cache/nginx /var/run /var/log/nginx /usr/share/nginx/html
+RUN chgrp -R root /var/cache/nginx /usr/share/nginx/html
+
+# afegim contingut
+copy ["/tmp", "/usr/share/nginx/html"]
 
 # users are not allowed to listen on priviliged ports
 RUN sed -i.bak 's/listen\(.*\)80;/listen 8081;/' /etc/nginx/conf.d/default.conf
